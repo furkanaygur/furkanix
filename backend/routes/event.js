@@ -2,11 +2,14 @@ const express = require("express");
 const router = express.Router();
 
 const User = require("../models/User");
+const EventModel = require("../models/Event");
 const Data = require("../dumpData.json");
 
 router.get("/event", async (req, res) => {
 	const USER_ID = "62377afa8fa59b08a68aa786";
-	const user = await User.findById(USER_ID);
+	const user = await User.findById(USER_ID).populate("events");
+
+	console.log(user);
 	const events = []
 	events.push(...user.events);
 	let message = "Events found for the user.";
