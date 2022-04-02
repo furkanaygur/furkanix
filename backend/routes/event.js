@@ -21,12 +21,23 @@ router.get("/event", async (req, res) => {
 	return res.json({ status: 200, message: message, data: events });
 });
 
-router.delete("/event", async (req, res) => {
-	const user = await Event.deleteMany()
+router.delete("/events", async (req, res) => {
 
-	message = user;
+	const deletingResult = await Event.deleteMany()	
+
+	if(deletingResult['acknowledged'] == true) {
 		
-	return res.json({ status: 200, message: message });
+		let message = ""
+		if(deletingResult['deletedCount'] == 0) {
+			message = "There is no event to delete"
+		} else {
+			message = `${deletingResult['deletedCount']} events deleted successfully`
+			await Keyword.deleteMany();
+		}
+		
+		return res.json({ status: 200, message: message});
+	}
+	return res.json({ status: 404, message: 'Event could not delete please try again later.' });
 });
 
 router.get("/event-search", async (req, res) => {
