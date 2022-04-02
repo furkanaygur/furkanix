@@ -1,10 +1,13 @@
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from selenium import webdriver
 import time
 
 import environ
 env = environ.Env()
 environ.Env.read_env()
+
+def index(request):
+    return HttpResponse(f"Django is working. Please use {request.META['HTTP_HOST']}/scrap/{{keyword}} to scraping.")
 
 def getOnlyUrl(attribute):
     # INFO example attribute = "window.location='/etkinlik/1SF59/TURKIYE/tr'"
@@ -18,8 +21,9 @@ def getOnlyUrl(attribute):
 
 def scrap(request, keyword):
     chromeDriverPath = env("CHROMEDIRVER_PATH")
-    driver = webdriver.Chrome(chromeDriverPath)
 
+    driver = webdriver.Chrome(executable_path=chromeDriverPath+'/chromedriver')
+    
     time.sleep(1)
 
     searchUrl = env("SEARCH_URL")
