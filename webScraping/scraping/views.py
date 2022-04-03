@@ -1,5 +1,6 @@
 from django.http import JsonResponse,HttpResponse
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 import time
 
 import environ
@@ -22,7 +23,11 @@ def getOnlyUrl(attribute):
 def scrap(request, keyword):
     chromeDriverPath = env("CHROMEDIRVER_PATH")
 
-    driver = webdriver.Chrome(executable_path=chromeDriverPath+'/chromedriver')
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    driver = webdriver.Chrome(chromeDriverPath+'/chromedriver',chrome_options=chrome_options)
     
     time.sleep(1)
 
