@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const KeywordSchema = Schema(
 	{
 		name: String,
+		length: Number
 		// events: [{ type: Schema.Types.ObjectId, ref: "Event" }],
 	},
 	{ timestamps: true }
