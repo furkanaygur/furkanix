@@ -21,6 +21,12 @@ router.get("/events", async (req, res) => {
 	return res.json({ status: 200, message: message, data: events });
 });
 
+router.get("/event/:id", async (req, res) => {
+	const event = await Event.findById(req.params.id);
+
+	return res.json({ status: 200, message: "Event found.", data: event });
+});
+
 router.delete("/events", async (req, res) => {
 
 	const deletingResult = await Event.deleteMany()	
