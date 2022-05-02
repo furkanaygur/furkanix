@@ -2,15 +2,19 @@ import * as React from 'react';
 import Svg, { Path } from "react-native-svg";
 import { TouchableOpacity } from "react-native";
 
-function DeleteButton({onPress}) {
+function DeleteButton(probs) {
+
+  const isAll = () => {  };
+
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity {...probs} onPress={probs.onPress}>
         <Svg 
             xmlns="http://www.w3.org/2000/svg"
-            width={28}
-            height={28}
+            width={24}
+            height={24}
             viewBox="0 0 30 30"
-            fill="#f70d1a"
+            fill={probs.isAll ? '#f70d1a' : '#000'}
+            fillOpacity="0.7"
             stroke="transparent"
             strokeWidth={2}
             strokeLinecap="round"

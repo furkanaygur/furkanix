@@ -5,7 +5,6 @@ const router = express.Router();
 const User = require("../models/User");
 const Event = require("../models/Event");
 const Keyword = require("../models/Keyword");
-const Data = require("../dumpData.json");
 
 router.get("/events", async (req, res) => {
 	const USER_ID = "62377afa8fa59b08a68aa786";
@@ -15,8 +14,7 @@ router.get("/events", async (req, res) => {
 	events.push(...user.events);
 	let message = "Events found for the user.";
 	if(user.events.length === 0) {
-		message = "No events found for the user. Showing dumy data";
-		events.push(...Data)
+		message = "No events found for the user.";
 	}
 	return res.json({ status: 200, message: message, data: events });
 });
