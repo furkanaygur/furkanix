@@ -4,8 +4,6 @@ import { TouchableOpacity } from "react-native";
 
 function DeleteButton(probs) {
 
-  const isAll = () => {  };
-
   return (
     <TouchableOpacity {...probs} onPress={probs.onPress}>
         <Svg 

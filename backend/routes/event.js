@@ -117,11 +117,13 @@ router.get("/event-search", async (req, res) => {
 		}
 
 		await user.save();
+		
+		const eventLast = await User.findById(USER_ID).populate("events", null, { keyword: newKeyword._id });
 
 		return res.json({
 			status: 200,
 			message: `New events have been created for the keyword ${keyword}.`,
-			data: events.data,
+			data: eventLast.events,
 		});
 	}
 });

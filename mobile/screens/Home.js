@@ -12,6 +12,8 @@ import {
 import axios from 'axios';
 import moment from 'moment';
 
+import AwesomeAlert from 'react-native-awesome-alerts';
+
 import {MapMarkerAltSolid, DeleteButton, FavoriteButton, FavoriteFilledButton, Empty} from '../components/icons';
 
 const HomeScreen = () => {
@@ -20,6 +22,8 @@ const HomeScreen = () => {
   const [favoriteEvents, setFavoriteEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEmpty, setIsEmpty] = useState(true);
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     getEvents();
@@ -31,7 +35,11 @@ const HomeScreen = () => {
       setEvents(fetchedEvents.data.data);
     }
     setLoading(false);
-    setIsEmpty(false);
+    setIsEmpty(true);
+    
+    if(fetchedEvents.data.data.length > 0){
+      setIsEmpty(false);
+    }
   };
 
   const getDate = date => {
@@ -58,7 +66,16 @@ const HomeScreen = () => {
 
   const deleteAllEvents = async () => {
     const fetchedEvents = await axios.delete('http://localhost:8080/api/events');
-    alert(fetchedEvents.data.message);   
+    getEvents();
+    setMessage(fetchedEvents.data.message);
+    toggleAlert();   
+  }
+  
+  const toggleAlert = () => {
+    setShow(true)
+    setTimeout(() => {
+      setShow(false)
+    }, 2000)
   }
 
   const emptyContent = () => {
@@ -169,7 +186,8 @@ const HomeScreen = () => {
                 flexDirection:'row',
                 justifyContent:'center',
                 alignItems:'center',
-                marginRight:20
+                marginRight:20,
+                marginTop:-20,
               }}
             >
               {
@@ -200,50 +218,57 @@ const HomeScreen = () => {
   }
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      
-      <View style={{
-          fontSize: 22
-        }}>
-        <Text style={{
-          paddingHorizontal: 20,
-          marginBottom: 20,
-          fontSize: 22
-          
-        }}>
-          {isEmpty ? 'Son Etkinlikler' : 'Etkinlikler Sayfasi'}
-        </Text>
-        { isEmpty ? (<View
-              style={{
-                position: 'absolute',
-                top:0,
-                right:0,
-                height:25,
-                width:50,
-                flex:1,
-                flexDirection:'row',
-                justifyContent:'center',
-                alignItems:'center',
-                marginRight:20
-              }}
-            > 
-            <DeleteButton isAll={true} onPress={() => deleteAllEvents()} />
-            </View>
-        )
-       : null}
+      <SafeAreaView style={{flex: 1}}>
+        
+        <View style={{
+            fontSize: 22
+          }}>
+          <Text style={{
+            paddingHorizontal: 20,
+            marginBottom: 20,
+            fontSize: 22
+            
+          }}>
+            {isEmpty == true ? 'Son Etkinlikler' : 'Etkinlikler Sayfasi'}
+          </Text>
+            { isEmpty == true ? null :(<View
+                style={{
+                  position: 'absolute',
+                  top:0,
+                  right:0,
+                  height:25,
+                  width:50,
+                  flex:1,
+                  flexDirection:'row',
+                  justifyContent:'center',
+                  alignItems:'center',
+                  marginRight:20
+                }}
+              > 
+              <DeleteButton isAll={true} onPress={() => deleteAllEvents()} />
+              </View> 
+          )
+        }
 
-       </View>
-
-      
-      {loading ? (
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <ActivityIndicator size="large" color="#002AE7" />
         </View>
-      ) : (
-        renderEventList()
-      )}
-      
-    </SafeAreaView>
+
+        <AwesomeAlert
+          show={show}
+          showProgress={false}
+          title={message}
+          closeOnTouchOutside={true}
+        />
+
+        {loading ? (
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <ActivityIndicator size="large" color="#002AE7" />
+          </View>
+        ) : (
+          renderEventList()
+        )}
+        
+      </SafeAreaView>
+  
   );
 };
 
