@@ -25,7 +25,6 @@ export default function SearchScreen() {
   const [favoriteEvents, setFavoriteEvents] = useState([]);
   
   const searchByKeywordFromBackend = async () => {
-    setQuery(null);
     setLoading(true);
     setEvents([]);
     const searchedEvents = await axios.get(
@@ -39,20 +38,22 @@ export default function SearchScreen() {
     setIsStart(false);
   }
 
+  const getEventsByKeyword = async () => {
+    setLoading(true);
+    const fetchedEvents = await axios(`http://localhost:8080/api/events`);
+    if (fetchedEvents.data.status == 200) {
+      setFavoriteEvents(fetchedEvents.data.favorites.map(favorite => favorite._id));
+    }
+    setLoading(false);
+  };
+
   const getDate = date => {
     return moment(date.split('T')[0]).format('DD MMM, Y');
   };
 
-  const toggleFavorite = (id) => {  
-    favoriteEvents.includes(id) ? deleteFavorite(id) : addFavorite(id);
-  }
-
-  const deleteFavorite = (id) => {
-    setFavoriteEvents(favoriteEvents.filter(e => e !== id))
-  }
-
-  const addFavorite = (id) => { 
-    setFavoriteEvents([...favoriteEvents, id])
+  const toggleFavorite = async (id) => {  
+    favoriteEvents.includes(id) ? setFavoriteEvents(favoriteEvents.filter(e => e !== id)) : setFavoriteEvents([...favoriteEvents, id]);
+    await axios.post('http://localhost:8080/api/favorite', {'favoriteID':id});
   }
 
   const checkFavorite = (id) => favoriteEvents.includes(id)
@@ -178,12 +179,16 @@ export default function SearchScreen() {
         }}
         style={{marginTop: 70}}
         ListEmptyComponent={emptyContent}
+        onRefresh={getEventsByKeyword}
+        refreshing={loading}
       />
     );
   }
 
   return (
-    <View>
+    <View  style={{ 
+      height: '93%',
+   }}>
       <View style={[styles.searchHeader]}></View>
       <SafeAreaView>
         <View style={styles.container}>
@@ -206,7 +211,7 @@ export default function SearchScreen() {
           </View>
         </View>
         {loading ? (
-          <View style={{flex: 1, justifyContent: 'center', marginTop: 200}}>
+          <View style={{flex: 1, justifyContent: 'center', marginTop: 350}}>
             <ActivityIndicator size="large" color="#002AE7" />
           </View>
         ) : (

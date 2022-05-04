@@ -6,8 +6,9 @@ import {
 
 import HomeScreen from '../screens/Home';
 import SearchScreen from '../screens/Search';
+import FavoriteScreen from '../screens/Favorites';
 
-import {Home, Search} from '../components/icons';
+import {Home, Search, FavoriteIcon} from '../components/icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -60,6 +61,26 @@ const Tabs = () => {
           tabBarIcon: ({focused}) => (
             <Search
               stroke={focused ? '#002AE7' : '#D8DBE9'}
+              width={24}
+              height={24}
+            />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Favorites"
+        component={FavoriteScreen}
+        options={{
+          tabBarLabel: ({focused}) => (
+            <Text style={[focused ? {color: '#002AE7'} : {color: '#D8DBE9'}]}>
+              Favorites
+            </Text>
+          ),
+          tabBarIcon: ({focused}) => (
+            <FavoriteIcon
+              stroke={focused ? '#002AE7' : '#D8DBE9'}
+              fill={focused ? '#002AE7' : '#D8DBE9'}
               width={24}
               height={24}
             />

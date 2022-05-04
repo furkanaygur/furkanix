@@ -7,8 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
-  StyleSheet,
-  LogBox
+  StyleSheet
 } from 'react-native';
 
 import axios from 'axios';
@@ -16,11 +15,10 @@ import moment from 'moment';
 
 import AwesomeAlert from 'react-native-awesome-alerts';
 
-import {MapMarkerAltSolid, DeleteButton, FavoriteButton, FavoriteFilledButton, Empty} from '../components/icons';
+import {MapMarkerAltSolid, FavoriteButton, FavoriteFilledButton, Empty} from '../components/icons';
 
-const HomeScreen = () => {
-  LogBox.ignoreAllLogs();
-  
+const FavoriteScreen = () => {
+
   const [events, setEvents] = useState([]);
   const [favoriteEvents, setFavoriteEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,10 +32,10 @@ const HomeScreen = () => {
 
   const getEvents = async () => {
     setLoading(true);
-    const fetchedEvents = await axios('http://localhost:8080/api/events');
+    const fetchedEvents = await axios('http://localhost:8080/api/favorites');
     if (fetchedEvents.data.status == 200) {
       setEvents(fetchedEvents.data.data);
-      setFavoriteEvents(fetchedEvents.data.favorites.map(favorite => favorite._id));
+      setFavoriteEvents(fetchedEvents.data.data.map(favorite => favorite._id));
     }
     setLoading(false);
     setIsEmpty(true);
@@ -50,10 +48,6 @@ const HomeScreen = () => {
   const getDate = date => {
     return moment(date.split('T')[0]).format('DD MMM, Y');
   };
-
-  const deleteEvent = (id) => { 
-    alert(`${id} deleted`);
-  }
   
   const toggleFavorite = async (id) => {  
     favoriteEvents.includes(id) ? setFavoriteEvents(favoriteEvents.filter(e => e !== id)) : setFavoriteEvents([...favoriteEvents, id]);
@@ -62,18 +56,18 @@ const HomeScreen = () => {
 
   const checkFavorite = (id) => favoriteEvents.includes(id)
 
-  const deleteAllEvents = async () => {
-    const fetchedEvents = await axios.delete('http://localhost:8080/api/events');
+  const unFavoriteAllEvents = async () => {
+    const fetchedEvents = await axios.post('http://localhost:8080/api/favorite?All=1');
     getEvents();
     setMessage(fetchedEvents.data.message);
     toggleAlert();   
   }
-  
+
   const toggleAlert = () => {
     setShow(true)
     setTimeout(() => {
       setShow(false)
-    }, 1500)
+    }, 2000)
   }
 
   const emptyContent = () => {
@@ -98,7 +92,7 @@ const HomeScreen = () => {
           textAlign: 'center',
           color: '#002AE7'
         }}>
-          Henüz bir etkinlik bulunmuyor. Etkinlikleri kaçırmamak için lütfen arama yapın.
+          Henüz hiç bir favoriye eklenmiş etkinliğiniz bulunmuyor. Kaçırmak istemediğiniz etklinliği favoriler arasına alabilirsiniz.
         </Text>
     </View>);
   };
@@ -191,9 +185,7 @@ const HomeScreen = () => {
               {
                 checkFavorite(item._id) ? ( <FavoriteFilledButton onPress={() => toggleFavorite(item._id)} />) : ( <FavoriteButton onPress={() => toggleFavorite(item._id)} />)
               }
-            
-            
-            <DeleteButton style={{ marginLeft:25 }} onPress={() => deleteEvent(item._id)}/>            
+         
             
           </View>
 
@@ -243,7 +235,7 @@ const HomeScreen = () => {
                   marginRight:20
                 }}
               > 
-              <DeleteButton isAll={true} onPress={() => deleteAllEvents()} />
+              <FavoriteFilledButton isAll={true} fill='#002AE7' onPress={() => unFavoriteAllEvents()} />
               </View> 
           )
         }
@@ -272,7 +264,7 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default FavoriteScreen;
 
 const styles = StyleSheet.create({
   titleStyle: {
