@@ -18,9 +18,8 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 
 import {MapMarkerAltSolid, DeleteButton, FavoriteButton, FavoriteFilledButton, Empty} from '../components/icons';
 
-const HomeScreen = () => {
-  LogBox.ignoreAllLogs();
-  
+const HomeScreen = ({navigation}) => {
+
   const [events, setEvents] = useState([]);
   const [favoriteEvents, setFavoriteEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,9 +27,15 @@ const HomeScreen = () => {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
+  useEffect(() => { 
+    LogBox.ignoreAllLogs();
+    const unsubscribe = navigation.addListener('tabPress', (e) => {
     getEvents();
-  }, []);
+    });
+    getEvents();
+    return unsubscribe;
+
+  }, [navigation]);
 
   const getEvents = async () => {
     setLoading(true);
@@ -51,8 +56,11 @@ const HomeScreen = () => {
     return moment(date.split('T')[0]).format('DD MMM, Y');
   };
 
-  const deleteEvent = (id) => { 
-    alert(`${id} deleted`);
+  const deleteEvent = async (id) => { 
+    const fetchedEvents = await axios.delete(`http://localhost:8080/api/event/${id}`);
+    getEvents();
+    setMessage(fetchedEvents.data.message);
+    toggleAlert(); 
   }
   
   const toggleFavorite = async (id) => {  
@@ -98,7 +106,7 @@ const HomeScreen = () => {
           textAlign: 'center',
           color: '#002AE7'
         }}>
-          Henüz bir etkinlik bulunmuyor. Etkinlikleri kaçırmamak için lütfen arama yapın.
+          There is no events. Please search events on the Search Screen!
         </Text>
     </View>);
   };
@@ -227,7 +235,7 @@ const HomeScreen = () => {
             fontSize: 22
             
           }}>
-           Etkinlikler
+           Events
           </Text>
             { isEmpty == true ? null :(<View
                 style={{

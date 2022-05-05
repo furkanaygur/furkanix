@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
-  StyleSheet
+  StyleSheet,
+  LogBox
 } from 'react-native';
 
 import axios from 'axios';
@@ -17,7 +18,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 
 import {MapMarkerAltSolid, FavoriteButton, FavoriteFilledButton, Empty} from '../components/icons';
 
-const FavoriteScreen = () => {
+const FavoriteScreen = ({navigation}) => {
 
   const [events, setEvents] = useState([]);
   const [favoriteEvents, setFavoriteEvents] = useState([]);
@@ -26,9 +27,15 @@ const FavoriteScreen = () => {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
+  useEffect(() => { 
+    LogBox.ignoreAllLogs();
+    const unsubscribe = navigation.addListener('tabPress', (e) => {
     getEvents();
-  }, []);
+    });
+    getEvents();
+    return unsubscribe;
+
+  }, [navigation]);
 
   const getEvents = async () => {
     setLoading(true);
@@ -92,7 +99,7 @@ const FavoriteScreen = () => {
           textAlign: 'center',
           color: '#002AE7'
         }}>
-          Henüz hiç bir favoriye eklenmiş etkinliğiniz bulunmuyor. Kaçırmak istemediğiniz etklinliği favoriler arasına alabilirsiniz.
+          There is no favorite events yet.
         </Text>
     </View>);
   };
@@ -219,7 +226,7 @@ const FavoriteScreen = () => {
             fontSize: 22
             
           }}>
-           Etkinlikler
+           Favorite Events
           </Text>
             { isEmpty == true ? null :(<View
                 style={{

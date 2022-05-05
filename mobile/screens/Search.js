@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,7 +8,8 @@ import {
   FlatList,
   Text,
   ActivityIndicator,
-  Image
+  Image,
+  LogBox
 } from 'react-native';
 
 import {MapMarkerAltSolid, Search, FavoriteButton, FavoriteFilledButton} from '../components/icons';
@@ -24,6 +25,10 @@ export default function SearchScreen() {
   const [isStart, setIsStart] = useState(true);
   const [favoriteEvents, setFavoriteEvents] = useState([]);
   
+  useEffect(() => { 
+    LogBox.ignoreAllLogs();
+  }, []);
+
   const searchByKeywordFromBackend = async () => {
     setLoading(true);
     setEvents([]);
@@ -72,7 +77,7 @@ export default function SearchScreen() {
           textAlign: 'center',
           color: '#002AE7'
         }}>
-          {isStart ? 'Etkinlikleri kaçırmamak için arama yapın.' : 'Aradığınız etkinlik veya sanatçı için hiçbir sonuç bulunamadı!'}
+          {isStart ? 'Search so you don\'t miss events!' : 'No results were found for the event or artist you searched for!'}
         </Text> 
     )
   };  
@@ -195,7 +200,7 @@ export default function SearchScreen() {
           <View style={styles.searchContainer}>
             <TextInput
               value={query}
-              placeholder="Etkinlik, sanatçı arayın."
+              placeholder="Search event or artist"
               style={styles.searchInput}
               placeholderTextColor="rgba(255, 255, 255, 0.85)"
               selectionColor="rgba(255, 255, 255, 0.85)"

@@ -46,11 +46,11 @@ router.delete("/events", async (req, res) => {
 	return res.json({ status: 404, message: 'Event could not delete please try again later.' });
 });
 
-router.delete("/event", async (req, res) => {
-	const id = req.query.id;
-
-	const event = await Event.findById(id).populate("keyword");
+router.delete("/event/:id", async (req, res) => {
+	const USER_ID = "62377afa8fa59b08a68aa786";
+	const id = req.params.id;
 	
+	const event = await Event.findById(id).populate("keyword");
 	const deletingResult = await Event.deleteOne({ _id: id })
 
 	if(deletingResult['acknowledged'] == true) {

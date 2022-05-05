@@ -40,7 +40,7 @@ const Tabs = () => {
                 styles.text,
                 focused ? styles.textFocused : styles.textNotFocused,
               ]}>
-              Anasayfa
+              Home
             </Text>
           ),
           tabBarIcon: ({focused}) => (
@@ -55,7 +55,7 @@ const Tabs = () => {
         options={{
           tabBarLabel: ({focused}) => (
             <Text style={[focused ? {color: '#002AE7'} : {color: '#D8DBE9'}]}>
-              Etkinlik Ara
+              Search
             </Text>
           ),
           tabBarIcon: ({focused}) => (
