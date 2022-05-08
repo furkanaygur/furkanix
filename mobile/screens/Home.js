@@ -29,12 +29,7 @@ const HomeScreen = ({navigation}) => {
 
   useEffect(() => { 
     LogBox.ignoreAllLogs();
-    const unsubscribe = navigation.addListener('tabPress', (e) => {
     getEvents();
-    });
-    getEvents();
-    return unsubscribe;
-
   }, [navigation]);
 
   const getEvents = async () => {
@@ -129,7 +124,6 @@ const HomeScreen = ({navigation}) => {
             paddingVertical: 10,
             borderRadius: 10,
           }}>
-
           <Image
             source={{
               uri: item.image_url,
@@ -149,7 +143,6 @@ const HomeScreen = ({navigation}) => {
                 {getDate(item.date)}
               </Text>
             ) : null}
-
             <Text
               style={{
                 fontSize: 11,
@@ -200,9 +193,7 @@ const HomeScreen = ({navigation}) => {
                 checkFavorite(item._id) ? ( <FavoriteFilledButton onPress={() => toggleFavorite(item._id)} />) : ( <FavoriteButton onPress={() => toggleFavorite(item._id)} />)
               }
             
-            
-            <DeleteButton style={{ marginLeft:25 }} onPress={() => deleteEvent(item._id)}/>            
-            
+            <DeleteButton style={{ marginLeft:25 }} onPress={() => deleteEvent(item._id)}/>             
           </View>
 
       </View>

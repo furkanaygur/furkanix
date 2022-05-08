@@ -19,7 +19,6 @@ const Tabs = () => {
         style: {
           borderTopWidth: 0,
           borderTopColor: 'transparent',
-
           elevation: 0,
           shadowColor: '#5bc4ff',
           shadowOpacity: 0,

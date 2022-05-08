@@ -1,0 +1,5 @@
+export const LOCATION_API_URL = 'your_api_url';
+export const LOCATION_API_KEY = 'your_api_key';
+
+export const WEATHER_API_URL = 'your_api_url';
+export const WEATHER_API_KEY = 'your_api_key';
