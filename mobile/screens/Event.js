@@ -12,7 +12,7 @@ import {
 
 import axios from 'axios';
 
-import {ChevronLeft, FavoriteFilledButton, FavoriteButton, MapMarkerAltSolid} from '../components/icons';
+import {ChevronLeft, FavoriteFilledIcon, FavoriteIcon, MapMarkerAltSolid} from '../components/icons';
 import DailyData from "../components/DailyData";
 import { LOCATION_API_URL, LOCATION_API_KEY, WEATHER_API_URL, WEATHER_API_KEY } from '../util/evn';
 
@@ -36,13 +36,12 @@ const EventScreen = ({route, navigation}) => {
     const url = `${LOCATION_API_URL}/address?key=${LOCATION_API_KEY}&inFormat=kvp&outFormat=json&location=${cityName}&noCacheIE=${new Date().getTime()}&callback=GeocodeCallback`
     const result = await axios.get(url)
     const regex = /lat":([0-9]+.[0-9]+),"lng":([0-9]+.[0-9]+)/gm;
-    const data = result.data;
-    const regexResult = regex.exec(data)[0]
+    const regexResult = regex.exec(result.data)[0]
     const lat = regexResult.split(',')[0].split(':')[1]
     const lng = regexResult.split(',')[1].split(':')[1]
     const weatherUrl = `${WEATHER_API_URL}lat=${lat}&lon=${lng}&exclude=current,minutely,hourly&units=metric&lang=en&appid=${WEATHER_API_KEY}`
     const weatherResult = await axios.get(weatherUrl)
-    const days= ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat","Sun"];
+    const days= ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const daysData = [];
     const tempData = [];
 
@@ -92,7 +91,7 @@ const EventScreen = ({route, navigation}) => {
 
   return loading ? (
     <View style={{flex: 1, justifyContent: 'center'}}>
-      <ActivityIndicator size="large" color="#542AE7" />
+      <ActivityIndicator size="large" color="#002AE7" />
     </View>
   ) : (
     <View style={{flex: 1}}>
@@ -205,19 +204,22 @@ const EventScreen = ({route, navigation}) => {
               </Text>
             </View>
           </View>
-          <View
-            style={{
-              backgroundColor: 'rgba(0, 42, 231, .1)',
-              width: 35,
-              height: 35,
-              borderRadius: 35 / 2,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              {
-                checkFavorite(event._id) ? ( <FavoriteFilledButton width={18} height={18} onPress={() => toggleFavorite(event._id)} />) : ( <FavoriteButton width={18} height={18} onPress={() => toggleFavorite(event._id)} />)
-              }
-          </View>
+          <TouchableOpacity
+              onPress={() => toggleFavorite(event._id)}>
+            <View
+              style={{
+                backgroundColor: 'rgba(0, 42, 231, .1)',
+                width: 50,
+                height: 50,
+                borderRadius: 50 / 2,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                {
+                  checkFavorite(event._id) ? ( <FavoriteFilledIcon width={22} height={22} />) : ( <FavoriteIcon width={24} height={24} />)
+                }
+            </View>
+          </TouchableOpacity>
         </View>
         <View
           style={{marginTop: 10, flexDirection: 'row', alignItems: 'center'}}>
@@ -341,7 +343,7 @@ export default EventScreen;
 const styles = StyleSheet.create({
   DailyData: {
     flex: 1,
-    width: 300,
+    width: 360,
     height:300,
     alignSelf: "center",
     borderRadius: 30,

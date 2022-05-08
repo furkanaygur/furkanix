@@ -15,19 +15,18 @@ const DailyData = ({dayData,tempData}) => {
             },
           ],
         }}
-        width={width-40} // from react-native
+        width={width-40}
         height={255}
+        yAxisSuffix=" °C"
         withInnerLines={false}
-        yAxisInterval={1} // optional, defaults to 1
+        yAxisInterval={1}
         chartConfig={{
-          backgroundColor: '#fff',
-          backgroundGradientFrom: '#aaa',
-          backgroundGradientTo: '#aaa',
-          decimalPlaces: 1, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(0, 0, 0, 1)`,
+          backgroundGradientFromOpacity: 0,
+          backgroundGradientToOpacity: 0,
+          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           style: {
-            borderRadius: 25,
+            borderRadius: 15,
           },
           propsForDots: {
             r: "4",
@@ -37,9 +36,13 @@ const DailyData = ({dayData,tempData}) => {
         }}
         bezier
         style={{
-          borderRadius: 25,
+          borderRadius: 15,
           alignSelf:'center',
-          paddingBottom:50,
+          paddingVertical:20,
+          paddingHorizontal:20,
+          backgroundColor: 'rgba(0, 42, 231, .8)',
+          height:'100%',
+          width:'100%',
         }}
       />
     </View>
