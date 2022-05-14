@@ -190,14 +190,14 @@ const EventScreen = ({route, navigation}) => {
               <Text
                 style={{
                   fontSize: 16,
-                  color: '#002AE7',
+                  color: '#332C34',
                 }}>
                {dateFormatter(event.date)[3]}
               </Text>
               <Text
                 style={{
                   fontSize: 13,
-                  color: '#002AE7',
+                  color: '#7C8298',
                   marginTop: 5,
                 }}>
                 {dateFormatter(event.date)[0].replace(',','')} - {getTime(event.date)}
