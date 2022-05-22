@@ -1,41 +1,27 @@
-import React, { useState, useEffect} from 'react';
+import React, { useEffect} from 'react';
 import { Container } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux'
-import { getEvents, getFavoriteEvents, getDate, toggleFavorite } from '../stores/eventSlice';
-import CardSkeleton from '../components/CardSkeloton'
-import { FavoriteIcon, FavoriteFilledIcon,DeleteIcon } from './icons'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import CardSkeleton from '../components/CardSkeloton'
 import "./Home.css"
 
-const Home = () => {
+import { useDispatch, useSelector } from 'react-redux'
+import { getFavoriteEvents, getDate } from '../stores/eventSlice';
+
+const Favorites = () => {
 
     const dispatch = useDispatch()
-    const { events, favorites } = useSelector((state) => state.event);
+    const { favorites } = useSelector((state) => state.event);
     
-    const [localEvents, setEvents] = useState([]);
-    const [favoriteEvents, setFavoriteEvents] = useState([]);
-
     useEffect(() => {
-        dispatch(getEvents());
         dispatch(getFavoriteEvents());
-        
     }, [])
-
-    const checkFavorite = (id) => {
-        return favoriteEvents.includes(id)
-    }
-    
-    const toggleFavoriteEvent = (id) => {
-        dispatch(toggleFavorite(id))
-        favoriteEvents.includes(id) ? setFavoriteEvents(favoriteEvents.filter(e => e !== id)) : setFavoriteEvents([...favoriteEvents, id]);
-    }
 
     return (
         <Container className='home'> 
             <div className='container'>   
                 <div className="row">         
-                { !events.loading ? 
-                    localEvents.map(
+                { !favorites.loading ? 
+                    favorites.data.map(
                         (event) => (
                         <div key={event._id} className="col-lg-4 col-sm-6 col-xs-12 d-flex justify-content-center">
                             <div className="card">
@@ -52,17 +38,7 @@ const Home = () => {
                                          }}>
                                             <img style={{ width: "250px" }} src={event.image_url} alt={ event.image_url } />
                                         </div>
-                                        <div className='head2 unselectable'>
-                                            <div className='btn-actions' onClick={() => toggleFavoriteEvent(event._id)}> 
-                                                {
-                                                    checkFavorite(event._id) ? ( <FavoriteFilledIcon />) : ( <FavoriteIcon/>)
-                                                }
-                                            </div>
-                                            <div className='btn-details'> Details</div>
-                                            <div className='btn-actions'> 
-                                                <DeleteIcon/>
-                                            </div>
-                                        </div>
+                                        <div className='head2'></div>
                                 </div>
                                 <div className="body">
                                     <h6> {getDate(event.date)} </h6>
@@ -83,4 +59,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default Favorites

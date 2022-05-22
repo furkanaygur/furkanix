@@ -1,0 +1,6 @@
+export { default as Home } from './Home'
+export { default as MapMarkerAltSolid } from './MapMarkerAltSolid'
+export { default as Search } from './Search'
+export { default as DeleteIcon } from './DeleteIcon'
+export { default as FavoriteIcon } from './FavoriteIcon'
+export { default as FavoriteFilledIcon } from './FavoriteFilledIcon'

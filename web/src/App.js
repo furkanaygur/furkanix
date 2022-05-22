@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './components/Header';
 import Home from './components/Home';
 import Search from "./components/Search";
+import Favorites from "./components/Favorites";
 import "./style.css";
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
       <Route path='/*' element={<Header />}>
         <Route path='' element={<Home />} />
         <Route path='search' element={<Search />} />
+        <Route path='favorites' element={<Favorites />} />
       </Route>
     </Routes>
   </BrowserRouter>
