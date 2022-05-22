@@ -10,7 +10,7 @@ function FavoriteButton(probs) {
             xmlns="http://www.w3.org/2000/svg"
             width={20}
             height={20}
-            style={{ "enable-background":"new 0 0 455 455" }}
+            style={{ "enableBackground":"new 0 0 455 455" }}
             viewBox="0 0 455 455"
             fill="#f70d1a"
             stroke="transparent"
