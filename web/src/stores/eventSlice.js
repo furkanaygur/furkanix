@@ -26,7 +26,6 @@ export const getDate = date => {
     return moment(date.split('T')[0]).format('DD MMM, Y');
 };
 
-
 export const toggleFavorite = createAsyncThunk("event/toggleFavoriteEvent",
     async (id) => {
       await axios.post('http://localhost:8080/api/favorite', {'favoriteID':id});
@@ -83,7 +82,7 @@ export const eventSlice = createSlice({
       },
       [getFavoriteEvents.fulfilled]: (state, { meta, payload, error }) => {
         state.favorites.data = payload;
-        state.favorites.ids = [payload.map(favorite => favorite._id)];
+        state.favorites.ids = payload.map(favorite => favorite._id);
         state.favorites.loading = false;
         state.favorites.error = '';
       },
