@@ -1,3 +1,12 @@
+.Toastify__toast-theme--dark {
+  background: #04046b !important;
+  font-size: 0.7rem;
+}
+
+.Toastify__progress-bar {
+  background: #fb3173 !important;
+}
+
 .home{
     margin-top: 65px;
 }

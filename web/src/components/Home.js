@@ -7,10 +7,13 @@ import { FavoriteIcon, FavoriteFilledIcon,DeleteIcon } from './icons'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Home.css"
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Home = () => {
 
     const dispatch = useDispatch()
-    const { events, favorites } = useSelector((state) => state.event);
+    const { events, favorites, status } = useSelector((state) => state.event);
     
     const [localEvents, setLocalEvents] = useState([]);
     const [favoriteEvents, setFavoriteEvents] = useState([]);
@@ -29,6 +32,20 @@ const Home = () => {
         setLocalEvents(events.data)
         setError(events.error)
     }, [events])
+    
+    useEffect(() => {
+        if(status != null){
+            toast(status, {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                theme: "dark"
+                });
+        }
+    }, [status])
 
     const checkFavorite = (id) => favoriteEvents.includes(id)
 
@@ -46,7 +63,8 @@ const Home = () => {
     return (
         <Container className='home'> 
             <div className='container'>   
-                <div className="row">         
+                <div className="row">
+                <ToastContainer />        
                 { !events.loading ?
                     localEvents.map(
                         (event) => (

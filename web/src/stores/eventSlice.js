@@ -6,7 +6,11 @@ export const getEvents = createAsyncThunk("event/fetchEvents",
     async () => {
         const fetchedEvents = await axios('http://localhost:8080/api/events');
         if (fetchedEvents.data.status == 200) {
-            return fetchedEvents.data.data
+            const response = {
+              status: fetchedEvents.data.message,
+              data: fetchedEvents.data.data
+            }
+            return response
         }
         return [];
     }   
@@ -16,7 +20,11 @@ export const getFavoriteEvents = createAsyncThunk("event/fetchFavoriteEvents",
     async () => {
         const fetchedEvents = await axios('http://localhost:8080/api/favorites');
         if (fetchedEvents.data.status == 200) {
-            return fetchedEvents.data.data
+            const response = {
+                status: fetchedEvents.data.message,
+                data: fetchedEvents.data.data
+            }
+            return response
         }
         return [];
     }   
@@ -28,22 +36,22 @@ export const getDate = date => {
 
 export const toggleFavorite = createAsyncThunk("event/toggleFavoriteEvent",
     async (id) => {
-      await axios.post('http://localhost:8080/api/favorite', {'favoriteID':id});
-      return true
+      const response = await axios.post('http://localhost:8080/api/favorite', {'favoriteID':id});
+      return response.data.message
     }   
 )
 
 export const deleteEvent = createAsyncThunk("event/deleteEvent",
     async (id) => {
-      await axios.delete(`http://localhost:8080/api/event/${id}`);
-      return true
+      const response = await axios.delete(`http://localhost:8080/api/event/${id}`);
+      return response.data.message
     }   
 )
 
 export const deleteAllEvents = createAsyncThunk("event/deleteAllEvent",
     async () => {
-      await axios.delete('http://localhost:8080/api/events');   
-      return true
+      const response = await axios.delete('http://localhost:8080/api/events');   
+      return response.data.message
     }   
 )
 
@@ -59,6 +67,7 @@ const initialState = {
     error: null,
     ids: []
   },
+  status: null
 };
 
 export const eventSlice = createSlice({
@@ -69,9 +78,10 @@ export const eventSlice = createSlice({
   },
   extraReducers: {
       [getEvents.fulfilled]: (state, { meta, payload, error }) => {
-        state.events.data = payload;
+        state.events.data = payload.data;
         state.events.loading = false;
         state.events.error = '';
+        state.status = payload.status;
       },
       [getEvents.pending]: (state, action) => {
         state.events.loading = true;
@@ -81,10 +91,11 @@ export const eventSlice = createSlice({
         state.events.error = error;
       },
       [getFavoriteEvents.fulfilled]: (state, { meta, payload, error }) => {
-        state.favorites.data = payload;
-        state.favorites.ids = payload.map(favorite => favorite._id);
+        state.favorites.data = payload.data;
+        state.favorites.ids = payload.data.map(favorite => favorite._id);
         state.favorites.loading = false;
         state.favorites.error = '';
+        state.status = payload.status;
       },
       [getFavoriteEvents.pending]: (state, action) => {
         state.favorites.loading = true;
@@ -92,6 +103,15 @@ export const eventSlice = createSlice({
       [getFavoriteEvents.rejected]: (state, { meta, payload, error }) => {
         state.favorites.loading = false;
         state.favorites.error = error;
+      },
+      [toggleFavorite.fulfilled]: (state, { meta, payload, error }) => {
+        state.status = payload;
+      },
+      [deleteEvent.fulfilled]: (state, { meta, payload, error }) => {
+        state.status = payload;
+      },
+      [deleteAllEvents.fulfilled]: (state, { meta, payload, error }) => {
+        state.status = payload;
       },
   }
 });
