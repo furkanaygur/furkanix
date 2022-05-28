@@ -7,6 +7,14 @@
   background: #fb3173 !important;
 }
 
+html {
+  height: 100;
+}
+
+.dark-mode{
+  background-color: #3d3d3d;
+}
+
 .home{
     margin-top: 65px;
 }
@@ -49,6 +57,11 @@
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   }
   
+.dark-mode .card {
+  background-color: #181818;
+  color: #ECE8E1;
+}
+
   .head {
     height: 100%;
     width: 100%;
@@ -99,6 +112,10 @@
     border-radius: 0 0 10px 10px;
   }
 
+  .dark-mode .body {
+    background-color: #fb3173;
+  }
+
   .line {
     margin: 5px 0px;
     margin-right: auto;
@@ -110,6 +127,10 @@
     margin-bottom: 10px;
   }
   
+  .dark-mode .line {
+    background-color: #fff;
+  }
+
   .card:hover .head > .line{
     width: 100%;
   }
@@ -136,6 +157,15 @@
     transform: translateY(50%);
     opacity: 0%;
     background-color: #fff;
+  }
+
+  .dark-mode .head2 {
+    background-color: #181818;
+    box-shadow: rgba(0, 0, 0, 0.55) 0px 5px 55px;
+  }
+
+  .dark-mode .card:hover .head2 {
+    background-color: #3d3d3d;
   }
 
 .card:hover .head2 {
@@ -171,6 +201,13 @@
 
 .btn-details:hover{
   height: 45px;
+}
+
+.dark-mode .btn-details{
+  background-image: linear-gradient(to left, #ff528a, #fb3173);
+    color: transparent;
+    -webkit-background-clip: text;
+  border: 1px solid #fff;
 }
 
 .btn-actions{

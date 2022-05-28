@@ -1,11 +1,45 @@
+import React, {useEffect} from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { Container, Navbar, Nav } from 'react-bootstrap';
-import { IconButton} from "@chakra-ui/react";
+import { IconButton } from "@chakra-ui/react";
 import { FaSun, FaMoon } from 'react-icons/fa';
+import { changeTheme, clearStatus  } from '../stores/eventSlice';
+import { useDispatch, useSelector } from 'react-redux'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Header = () => {
+    
+    const dispatch = useDispatch()
+    const { status, theme } = useSelector((state) => state.event);
+  
+    useEffect(() => {
+        toast(status, {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            theme: "dark"
+            });
+
+        dispatch(clearStatus())   
+    }, [status])
+
+    const changeThemeHandler = () => {
+        if(theme == "light") {
+            document.body.classList.add('dark-mode')
+            dispatch(changeTheme('dark')) 
+        } else {
+            document.body.classList.remove('dark-mode');
+            dispatch(changeTheme('light')) 
+        }
+    }
+
     return (
         <div>
+            <ToastContainer/>
             <Navbar collapseOnSelect expand="lg" style={{ backgroundColor: "#04046b", height:'60px' }} variant="dark" fixed='top'>
                 <Container>
                     <Navbar.Brand><NavLink to="/" className='Logo' style={{textDecoration: "none", color: "#fff", display:'flex', justifyContent:'center', alignItems:'center'}} > <img style={{ height:50, width:50 }} src='/logo.png'></img> Furkanix </NavLink></Navbar.Brand>
@@ -19,11 +53,12 @@ const Header = () => {
                             <NavLink style={({ isActive }) => ({ color: isActive ? "#fb3173" : "#fff" })}
                                 to="favorites" className='nav-link'> Favorites </NavLink>
                             <IconButton
-                            icon={<FaMoon />}
-                            isRound={true} 
-                            size='md'
-                            alignSelf='flex-end'
-                            marginLeft={'3'}
+                                icon={ theme=='dark' ? <FaSun /> : <FaMoon />}
+                                isRound={true} 
+                                size='md'
+                                alignSelf='flex-end'
+                                marginLeft={'3'}
+                                onClick={ () => changeThemeHandler() }
                             />
                         </Nav>
                     </Navbar.Collapse>

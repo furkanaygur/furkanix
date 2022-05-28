@@ -169,7 +169,7 @@ router.post("/favorite", async (req, res) => {
 		return res.status(500).send(err);
 	}
 
-	return res.json({ status: 200, message: 'The event has been successfully addd your favourites' });
+	return res.json({ status: 200, message: 'The event has been successfully aded your favourites.' });
 });
 
 router.get("/favorites", async (req,res) => {

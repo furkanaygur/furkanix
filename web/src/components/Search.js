@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Button, HStack, Input, Heading, VStack} from "@chakra-ui/react";
 import { FaSearch } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux'
 
 
 const Search = () => {
     const [content, setContent] = useState('');
     const [statusInput, setStatusInput] = useState(true);
+
+    const { theme } = useSelector((state) => state.event);
 
     function handleSubmit(e){
         e.preventDefault();
@@ -24,7 +27,7 @@ const Search = () => {
           p='5'
           fontWeight='extrabold'
           size='xl'
-          bgGradient='linear(to-l, #04046b, #fb3173)'
+          bgGradient={theme == "dark" ? 'linear(to-l, #ff528a, #fb3173)' : 'linear(to-l, #04046b, #fb3173)'}
           bgClip='text'
         >
           Search Event

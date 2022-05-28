@@ -30,6 +30,16 @@ export const getFavoriteEvents = createAsyncThunk("event/fetchFavoriteEvents",
     }   
 )
 
+export const getFavoriteEventsHandler = createAsyncThunk("event/fetchFavoriteEventsHandler",
+    async () => {
+        const fetchedEvents = await axios('http://localhost:8080/api/favorites');
+        if (fetchedEvents.data.status == 200) {
+            return fetchedEvents.data.data
+        }
+        return [];
+    }   
+)
+
 export const getDate = date => {
     return moment(date.split('T')[0]).format('DD MMM, Y');
 };
@@ -67,14 +77,20 @@ const initialState = {
     error: null,
     ids: []
   },
-  status: null
+  status: null,
+  theme: 'light'
 };
 
 export const eventSlice = createSlice({
   name: 'events',
   initialState,
   reducers: {
-    
+    clearStatus: (state, action) => {
+      state.status = null;
+    },
+    changeTheme: (state, action) => {
+      state.theme = action.payload;
+    }
   },
   extraReducers: {
       [getEvents.fulfilled]: (state, { meta, payload, error }) => {
@@ -113,8 +129,14 @@ export const eventSlice = createSlice({
       [deleteAllEvents.fulfilled]: (state, { meta, payload, error }) => {
         state.status = payload;
       },
+      [getFavoriteEventsHandler.fulfilled]: (state, { meta, payload, error }) => {
+        state.favorites.data = payload
+        state.favorites.ids = payload.map(favorite => favorite._id);
+      },
   }
 });
 
+
+export const { clearStatus, changeTheme } = eventSlice.actions;
 
 export default eventSlice.reducer;
