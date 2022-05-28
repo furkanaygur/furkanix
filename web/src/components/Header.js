@@ -12,7 +12,17 @@ const Header = () => {
     
     const dispatch = useDispatch()
     const { status, theme } = useSelector((state) => state.event);
-  
+    
+    useEffect(() => {
+        if(localStorage.getItem("theme") == "dark") {
+            document.body.classList.add('dark-mode')
+            dispatch(changeTheme('dark')) 
+        } else {
+            document.body.classList.remove('dark-mode');
+            dispatch(changeTheme('light')) 
+        }
+    },[])
+
     useEffect(() => {
         toast(status, {
             position: "bottom-right",
@@ -31,9 +41,11 @@ const Header = () => {
         if(theme == "light") {
             document.body.classList.add('dark-mode')
             dispatch(changeTheme('dark')) 
+            localStorage.setItem("theme", "dark")
         } else {
             document.body.classList.remove('dark-mode');
             dispatch(changeTheme('light')) 
+            localStorage.setItem("theme", "light")
         }
     }
 
