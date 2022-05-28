@@ -1,27 +1,44 @@
 import { useState, useEffect } from 'react';
 import { Button, HStack, Input, Heading, VStack} from "@chakra-ui/react";
 import { FaSearch } from 'react-icons/fa';
-import { useSelector } from 'react-redux'
 import Card from './Card';
 import { SpinnerDotted } from 'spinners-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux'
+import { getFavoriteEventsHandler, toggleFavorite, deleteEvent } from '../stores/eventSlice';
 
 const Search = () => {
     const [content, setContent] = useState('');
     const [statusInput, setStatusInput] = useState(true);
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [favoriteEvents, setFavoriteEvents] = useState([]);
 
-    const { theme } = useSelector((state) => state.event);
+    const dispatch = useDispatch()
+    const {  favorites, theme } = useSelector((state) => state.event);
 
-    function handleSubmit(e){
-        if(content != '') {
+    useEffect(() => {
+        dispatch(getFavoriteEventsHandler());
+    }, [])
+
+    useEffect(() => {
+        setFavoriteEvents(favorites.ids)
+    }, [favorites])
+
+    const handleSubmit = async (e) =>{
+        e.preventDefault();
+        if(content.trim() != '') {
             setLoading(true);
-            
-            setTimeout(() => {
-                setLoading(false);
-            }, 3000)
+            setEvents([]);
+            const searchedEvents = await axios.get(
+            `http://localhost:8080/api/event-search?keyword=${content.toLowerCase()}`,
+            );
+            if (searchedEvents.data.status == 200) {
+                setEvents(searchedEvents.data.data);
+            }
+            setLoading(false);
         } else {
             toast.error('Please enter the word you want to search!', {
                 position: "bottom-right",
@@ -33,13 +50,25 @@ const Search = () => {
                 theme: "dark"
                 });
         }
-        e.preventDefault();
     }
 
     if (content && !statusInput) {
         setStatusInput(true);
     }
- 
+
+    const deleteEventHandle = (id) => {
+        const lastEvents = events.filter((event) => event._id !== id);
+        setEvents(lastEvents)
+        dispatch(deleteEvent(id))
+    }
+
+    const toggleFavoriteEvent = (id) => {
+        favoriteEvents.includes(id) ? setFavoriteEvents(favoriteEvents.filter(e => e !== id)) : setFavoriteEvents([...favoriteEvents, id]); 
+        dispatch(toggleFavorite(id))
+    }
+
+    const checkFavorite = (id) => favoriteEvents.includes(id)
+
     return (
         <div className='home'>
             <ToastContainer/>
