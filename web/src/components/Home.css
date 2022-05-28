@@ -7,10 +7,6 @@
   background: #fb3173 !important;
 }
 
-html {
-  height: 100;
-}
-
 .dark-mode{
   background-color: #3d3d3d;
 }
@@ -224,5 +220,11 @@ html {
 }
 
 .css-1hiy9op:focus, .css-1hiy9op[data-focus] {
-  border-color: #fb3173;
+  border-color: #fb3173 !important;
+  background: #EDF2F7 !important;
+}
+
+.css-19ehuks {
+  min-height: 0% !important;
+  padding-bottom: 10px !important;
 }
