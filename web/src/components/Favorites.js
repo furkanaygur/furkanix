@@ -31,12 +31,6 @@ const Favorites = () => {
         favoriteEvents.includes(id) ? setFavoriteEvents(favoriteEvents.filter(e => e !== id)) : setFavoriteEvents([...favoriteEvents, id]); 
         dispatch(toggleFavorite(id))
 
-        setTimeout(() => {
-            favorites.data.map((event) =>{
-                favorites.ids.includes(event._id) ? setLocalEvents(localEvents.filter(e => e._id !== event._id)) : null
-            })
-            dispatch(getFavoriteEventsHandler());
-        }, 5000)
     }
 
     const deleteEventHandle = (id) => {
@@ -72,13 +66,16 @@ const Favorites = () => {
                             p='5'
                             fontWeight='extrabold'
                             size='xl'
-                            bgGradient='linear(to-l, #04046b, #fb3173)'
+                            bgGradient={theme == "dark" ? 'linear(to-l, #ff528a, #fb3173)' : 'linear(to-l, #04046b, #fb3173)'}
                             bgClip='text'
                             >
                             Go to Search and add some events to your favorites
                             </Heading>
-                            <Link className='btn-details' to="/search"> <FaSearch style={{ 
-                                color: "#04046b",
+                            <Link className='btn-details' style={{ 
+                                color: theme == "dark" && "#fff",
+                                borderColor: theme == "dark" && "#fb3173",
+                             }} to="/search"> <FaSearch style={{ 
+                                color: theme == "dark" ? "#fff" : "#fb3173",
                                 marginRight: "6px",
                              }} /> Search </Link>                   
                         </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux'
-import { getEvents, getFavoriteEvents, getDate, toggleFavorite, deleteEvent } from '../stores/eventSlice';
+import { getEvents, getFavoriteEventsHandler, getDate, toggleFavorite, deleteEvent } from '../stores/eventSlice';
 import CardSkeleton from '../components/CardSkeloton'
 import Card from './Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,7 +17,7 @@ const Home = () => {
 
     useEffect(() => {
         dispatch(getEvents());
-        dispatch(getFavoriteEvents());
+        dispatch(getFavoriteEventsHandler());
     }, [])
 
     useEffect(() => {

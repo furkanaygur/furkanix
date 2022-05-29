@@ -1,6 +1,7 @@
 import React from 'react';
 import { getDate } from '../stores/eventSlice';
 import { FavoriteIcon, FavoriteFilledIcon,DeleteIcon } from './icons'
+import { Link } from "react-router-dom";
 
 const Card = ({event, toggleFavoriteEvent, checkFavorite, deleteEventHandle, theme}) => {
     return (
@@ -25,7 +26,7 @@ const Card = ({event, toggleFavoriteEvent, checkFavorite, deleteEventHandle, the
                                     checkFavorite(event._id) ? ( <FavoriteFilledIcon fill={ theme == "dark" ? 'white' : '#f70d1a'} />) : ( <FavoriteIcon fill={ theme == "dark" ? 'white' : '#f70d1a'} />)
                                 }
                             </div>
-                            <div className='btn-details'> Details</div>
+                            <Link className='btn-details' to={`/event/${event._id}`}> Details </Link>
                             <div className='btn-actions' onClick={() => deleteEventHandle(event._id)}> 
                                 <DeleteIcon fill={ theme == "dark" ? 'white' : '#f70d1a'}/>
                             </div>
