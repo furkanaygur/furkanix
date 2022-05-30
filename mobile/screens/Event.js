@@ -72,6 +72,7 @@ const EventScreen = ({route, navigation}) => {
       day: 'numeric',
       weekday: 'long'
     };
+    if(ms == undefined) {return "-"}
     const date = new Date(ms.split('T')[0]).toLocaleDateString('en-EN', options)
     if(date == undefined || date == "") { return "-"}
     return date.split(" ")
@@ -172,14 +173,14 @@ const EventScreen = ({route, navigation}) => {
                   fontSize: 14,
                   color: '#002AE7',
                 }}>
-                {dateFormatter(event.date)[2].replace(',','')}
+                {(event.date == undefined || event.date != '') ? dateFormatter(event.date)[2].replace(',','') : '-'}
               </Text>
               <Text
                 style={{
                   fontSize: 14,
                   color: '#002AE7',
                 }}>
-                {dateFormatter(event.date)[1].replace(',','')}
+                  {(event.date == undefined || event.date != '')? dateFormatter(event.date)[1].replace(',','') : '-'}
               </Text>
             </View>
             <View
@@ -192,7 +193,7 @@ const EventScreen = ({route, navigation}) => {
                   fontSize: 16,
                   color: '#332C34',
                 }}>
-               {dateFormatter(event.date)[3]}
+               {(event.date == undefined || event.date != '') ? dateFormatter(event.date)[3] : '-'}
               </Text>
               <Text
                 style={{
@@ -200,7 +201,7 @@ const EventScreen = ({route, navigation}) => {
                   color: '#7C8298',
                   marginTop: 5,
                 }}>
-                {dateFormatter(event.date)[0].replace(',','')} - {getTime(event.date)}
+                  {(event.date == undefined || event.date != '')? `${dateFormatter(event.date)[0].replace(',','')} - ${getTime(event.date)}`  : '-'}
               </Text>
             </View>
           </View>
