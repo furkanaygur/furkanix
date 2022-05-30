@@ -41,7 +41,10 @@ export const getFavoriteEventsHandler = createAsyncThunk("event/fetchFavoriteEve
 )
 
 export const getDate = date => {
-    return moment(date.split('T')[0]).format('DD MMM, Y');
+    if(date != undefined) {
+      return moment(date.split('T')[0]).format('DD MMM, Y');
+    }
+    return '-';
 };
 
 export const toggleFavorite = createAsyncThunk("event/toggleFavoriteEvent",
