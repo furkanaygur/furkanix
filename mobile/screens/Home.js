@@ -120,7 +120,7 @@ const HomeScreen = ({navigation}) => {
             alignItems: 'center',
             marginBottom: 15,
             paddingHorizontal: 20,
-            backgroundColor: '#ECE8E1',
+            backgroundColor: 'rgba(216, 219, 233, 0.9)',
             paddingVertical: 10,
             borderRadius: 10,
           }}>
